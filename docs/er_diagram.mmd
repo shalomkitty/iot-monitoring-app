@@ -1,0 +1,75 @@
+erDiagram
+    USER ||--o{ DEVICE : owns
+    DEVICE ||--o{ TELEMETRY_POINT : produces
+    USER ||--o{ ALERT_THRESHOLD : configures
+    DEVICE ||--o{ ALERT_THRESHOLD : scopes
+    ALERT_THRESHOLD ||--o{ ALERT : triggers
+    TELEMETRY_POINT ||--o{ ALERT : causes
+    USER ||--o{ AI_INSIGHT : requests
+    DEVICE ||--o{ AI_INSIGHT : analyzes
+
+    USER {
+      int id
+      string username
+      string email
+    }
+
+    DEVICE {
+      int id
+      int owner_id
+      string name
+      string api_key
+      string location
+      json metadata
+      bool is_active
+      datetime last_seen_at
+      datetime created_at
+    }
+
+    TELEMETRY_POINT {
+      int id
+      int device_id
+      string metric
+      float value
+      string unit
+      datetime timestamp
+      json raw_payload
+      datetime created_at
+    }
+
+    ALERT_THRESHOLD {
+      int id
+      int owner_id
+      int device_id
+      string metric
+      float min_value
+      float max_value
+      bool enabled
+      datetime created_at
+    }
+
+    ALERT {
+      int id
+      int threshold_id
+      int device_id
+      int telemetry_point_id
+      string status
+      string message
+      datetime triggered_at
+      datetime acknowledged_at
+      datetime closed_at
+    }
+
+    AI_INSIGHT {
+      int id
+      int owner_id
+      int device_id
+      string metric
+      int hours
+      text prompt
+      text response
+      string status
+      text error
+      datetime created_at
+      datetime completed_at
+    }
